@@ -28,10 +28,9 @@ To build and run this project, you will need:
 ```
 
 ### Run the application:
-The project is configured to run with the local profile, which activates the embedded DynamoDB configuration.
 
 ```bash
-   ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+   ./mvnw spring-boot:run
 ```
 
 The application will be available at http://localhost:8080.
@@ -51,11 +50,10 @@ The pom.xml includes the com.amazonaws:DynamoDBLocal dependency, which contains 
 ```
 
 ### Embedded Client Configuration:
-A Spring @Bean configuration, activated by the `local` profile, programmatically starts the embedded database and creates the shopping_cart table on application startup.
+A Spring @Bean configuration, programmatically starts the embedded database and creates the shopping_cart table on application startup.
 
 ```java
 @Bean
-@Profile("local")
 DynamoDbEnhancedClient dynamoDbEnhancedClient() {
 // Starts an in-memory, embedded DynamoDB instance
 var dynamoDbClient = DynamoDBEmbedded.create(true).dynamoDbClient();
