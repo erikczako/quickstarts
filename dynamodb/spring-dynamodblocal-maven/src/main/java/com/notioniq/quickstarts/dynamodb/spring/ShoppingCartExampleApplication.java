@@ -4,7 +4,6 @@ import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
@@ -22,7 +21,6 @@ public class ShoppingCartExampleApplication {
      * @return The configured {@link DynamoDbEnhancedClient}.
      */
     @Bean
-    @Profile("local")
     DynamoDbEnhancedClient dynamoDbEnhancedClient() {
         var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())
