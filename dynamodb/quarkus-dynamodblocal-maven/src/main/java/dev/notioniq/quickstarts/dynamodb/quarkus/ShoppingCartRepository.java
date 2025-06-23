@@ -1,4 +1,4 @@
-package com.notioniq.quickstarts.dynamodb.quarkus;
+package dev.notioniq.quickstarts.dynamodb.quarkus;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;

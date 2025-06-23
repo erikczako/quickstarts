@@ -1,4 +1,4 @@
-package com.notioniq.quickstarts.dynamodb.quarkus;
+package dev.notioniq.quickstarts.dynamodb.quarkus;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.ws.rs.core.HttpHeaders;

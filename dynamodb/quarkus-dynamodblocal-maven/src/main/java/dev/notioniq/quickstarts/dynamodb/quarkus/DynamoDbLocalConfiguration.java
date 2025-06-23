@@ -1,4 +1,4 @@
-package com.notioniq.quickstarts.dynamodb.quarkus;
+package dev.notioniq.quickstarts.dynamodb.quarkus;
 
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import jakarta.enterprise.inject.Produces;

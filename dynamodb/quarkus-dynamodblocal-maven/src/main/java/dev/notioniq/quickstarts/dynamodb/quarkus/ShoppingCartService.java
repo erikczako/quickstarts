@@ -1,4 +1,4 @@
-package com.notioniq.quickstarts.dynamodb.quarkus;
+package dev.notioniq.quickstarts.dynamodb.quarkus;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.slf4j.Logger;
