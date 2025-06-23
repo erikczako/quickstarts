@@ -1,4 +1,4 @@
-package com.notioniq.quickstarts.dynamodb.spring;
+package dev.notioniq.quickstarts.dynamodb.spring;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;

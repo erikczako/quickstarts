@@ -1,4 +1,4 @@
-package com.notioniq.quickstarts.dynamodb.spring;
+package dev.notioniq.quickstarts.dynamodb.spring;
 
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import org.springframework.boot.SpringApplication;

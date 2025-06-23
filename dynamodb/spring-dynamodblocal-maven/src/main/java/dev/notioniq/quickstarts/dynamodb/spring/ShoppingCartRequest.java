@@ -1,4 +1,4 @@
-package com.notioniq.quickstarts.dynamodb.spring;
+package dev.notioniq.quickstarts.dynamodb.spring;
 
 import java.math.BigDecimal;
 
