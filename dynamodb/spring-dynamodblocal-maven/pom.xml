@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>dev.notioniq</groupId>
+    <groupId>dev.notioniq.quickstarts.dynamodb</groupId>
     <artifactId>spring-dynamodblocal-maven</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
