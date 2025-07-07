@@ -5,7 +5,7 @@ This approach completely automates the local database setup, requiring no extern
 
 The example application is a simple Shopping Cart service demonstrating basic CRUD (Create, Read, Delete) operations.
 
-For a detailed, step-by-step explanation, please see the full blog post. [link]
+For a detailed, step-by-step explanation, please see the full blog post https://notioniq.dev/blog/this-is-your-optimal-setup-for-local-dynamodb/.
 
 ## Features
 * Zero Manual Setup: DynamoDB Local starts and stops with the Quarkus application.
@@ -17,14 +17,14 @@ For a detailed, step-by-step explanation, please see the full blog post. [link]
 ## Prerequisites
 To build and run this project, you will need:
 
-* OpenJDK 24
+* OpenJDK 21
 * Maven 3.9+
 
 ## Getting Started
 ### Clone the repository:
 ```bash
-   git clone [link]
-   cd quarkus-dynamodblocal-maven
+   git clone https://github.com/erikczako/quickstarts.git
+   cd dynamodb/embedded/dynamodb-embedded-quarkus/
 ```
 
 ### Run the application:
@@ -70,7 +70,6 @@ public class DynamoDbLocalConfiguration {
 ### Running Tests
 To run the integration tests, which validate the entire application stack against the embedded database, execute:
 
-Bash
 ```bash
    ./mvnw clean test
 ```
