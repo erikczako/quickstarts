@@ -8,10 +8,10 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 @SpringBootApplication
-public class ShoppingCartExampleApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(ShoppingCartExampleApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     /**
