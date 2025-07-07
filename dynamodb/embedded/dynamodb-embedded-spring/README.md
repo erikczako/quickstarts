@@ -5,7 +5,7 @@ This approach completely automates the local database setup, requiring no extern
 
 The example application is a simple Shopping Cart service demonstrating basic CRUD (Create, Read, Delete) operations.
 
-For a detailed, step-by-step explanation, please see the full blog post. [link]
+For a detailed, step-by-step explanation, please see the full blog post https://notioniq.dev/blog/this-is-your-optimal-setup-for-local-dynamodb/.
 
 ## Features
 * Zero Manual Setup: DynamoDB Local starts and stops with the Spring Boot application.
