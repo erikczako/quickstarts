@@ -30,7 +30,7 @@ public class ShoppingCartService {
 
     public ShoppingCart save(ShoppingCartRequest shoppingCartRequest) {
         var userId = currentUserId();
-        var shoppingCart = new ShoppingCart(userId, shoppingCartRequest.getTotalPrice(), shoppingCartRequest.getNumberOfItems());
+        var shoppingCart = new ShoppingCart(userId, shoppingCartRequest.totalPrice(), shoppingCartRequest.numberOfItems());
         logger.info("Creating new shopping cart for user {}.", userId);
 
         shoppingCartRepository.save(shoppingCart);
@@ -38,11 +38,6 @@ public class ShoppingCartService {
         return shoppingCart;
     }
 
-    /**
-     * This is a placeholder. In a real application, this would be retrieved from the current spring security context.
-     * For example: var authentication = SecurityContextHolder.getContext().getAuthentication();
-     * @return current users id
-     */
     private Long currentUserId() {
         return 222L;
     }

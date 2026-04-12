@@ -1,11 +1,12 @@
 package dev.notioniq.quickstarts.dynamodb.spring;
 
-import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
+import io.awspring.cloud.dynamodb.DynamoDbTableNameResolver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.dynamodb.services.local.embedded.DynamoDBEmbedded;
 
 @SpringBootApplication
 public class Application {
@@ -14,19 +15,14 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    /**
-     * Configures and provides a {@link DynamoDbEnhancedClient} bean for interacting with an embedded DynamoDB instance.
-     * This method initializes an in-memory DynamoDB Local instance, creates the "shopping_cart" table, and returns a client configured to use it.
-     *
-     * @return The configured {@link DynamoDbEnhancedClient}.
-     */
     @Bean
-    DynamoDbEnhancedClient dynamoDbEnhancedClient() {
+    DynamoDbEnhancedClient dynamoDbEnhancedClient(DynamoDbTableNameResolver tableNameResolver) {
         var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())
                 .build();
 
-        var table = dynamoDbEnhancedClient.table("shopping_cart", TableSchema.fromBean(ShoppingCart.class));
+        var tableName = tableNameResolver.resolve(ShoppingCart.class);
+        var table = dynamoDbEnhancedClient.table(tableName, TableSchema.fromBean(ShoppingCart.class));
         table.createTable();
         return dynamoDbEnhancedClient;
     }

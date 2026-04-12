@@ -2,22 +2,21 @@ package dev.notioniq.quickstarts.dynamodb.spring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@AutoConfigureRestTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ShoppingCartControllerTest {
 
     @Autowired
-    TestRestTemplate restTemplate;
+    RestTestClient restTestClient;
 
     @Test
     void testCrudShoppingCart() {
@@ -25,26 +24,44 @@ class ShoppingCartControllerTest {
         var expectedNumberOfItems = 7;
 
         // create a new shopping cart for current user
-        var uri = restTemplate.postForLocation("/v1/shopping-carts", new ShoppingCartRequest(expectedNumberOfItems, expectedTotalPrice));
+        var uri = restTestClient.post()
+                .uri("/v1/shopping-carts")
+                .body(new ShoppingCartRequest(expectedNumberOfItems, expectedTotalPrice))
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .returnResult()
+                .getResponseHeaders()
+                .getLocation();
+
         assertNotNull(uri);
 
         // get the shopping cart for current user
-        var response = restTemplate.getForObject(uri, ShoppingCart.class);
+        var response = restTestClient.get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBody(ShoppingCart.class)
+                .returnResult()
+                .getResponseBody();
+
+        assertNotNull(response);
         assertEquals(expectedTotalPrice, response.getTotalPrice());
         assertEquals(expectedNumberOfItems, response.getNumberOfItems());
 
         // delete the shopping cart for current user
-        var deleteResponse = restTemplate.exchange(uri, HttpMethod.DELETE, null, Void.class);
-        assertTrue(deleteResponse.getStatusCode().is2xxSuccessful());
+        restTestClient.delete()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful();
 
         // try to get the shopping cart for current user again
-        var getResponse = restTemplate.getForEntity(uri, ShoppingCart.class);
-        assertEquals(HttpStatus.NOT_FOUND, getResponse.getStatusCode());
-    }
-
-    @Test
-    void testShoppingCartNotFound() {
-        var response = restTemplate.getForEntity("/v1/shopping-carts/current", ShoppingCart.class);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        restTestClient.get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
     }
 }
