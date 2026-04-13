@@ -17,7 +17,7 @@ For a detailed, step-by-step explanation, please see the full blog post https://
 ## Prerequisites
 To build and run this project, you will need:
 
-* OpenJDK 21
+* Latest OpenJDK
 * Maven 3.9+
 
 ## Getting Started
@@ -39,14 +39,14 @@ The application will be available at http://localhost:8080.
 The automation is achieved through two key components:
 
 ### DynamoDBLocal Maven Dependency:
-The pom.xml includes the com.amazonaws:DynamoDBLocal dependency, which contains the necessary classes to run an embedded, in-process instance of DynamoDB.
+The pom.xml includes the software.amazon.dynamodb:DynamoDBLocal dependency, which contains the necessary classes to run an embedded, in-process instance of DynamoDB.
 
 ```xml
 <dependency>
-    <groupId>com.amazonaws</groupId>
+    <groupId>software.amazon.dynamodb</groupId>
     <artifactId>DynamoDBLocal</artifactId>
-    <version>2.6.0</version>
-</dependency>   
+    <version>3.3.0</version>
+</dependency>
 ```
 
 ### Embedded Client Configuration:
@@ -54,19 +54,14 @@ A Spring @Bean configuration, programmatically starts the embedded database and 
 
 ```java
 @Bean
-DynamoDbEnhancedClient dynamoDbEnhancedClient() {
-// Starts an in-memory, embedded DynamoDB instance
-var dynamoDbClient = DynamoDBEmbedded.create(true).dynamoDbClient();
-
-    // Configures the Enhanced Client to use the embedded instance
+DynamoDbEnhancedClient dynamoDbEnhancedClient(DynamoDbTableNameResolver tableNameResolver) {
     var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
-            .dynamoDbClient(dynamoDbClient)
+            .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())
             .build();
 
-    // Creates the table on the new, empty database instance
-    var table = dynamoDbEnhancedClient.table("shopping_cart", TableSchema.fromBean(ShoppingCart.class));
+    var tableName = tableNameResolver.resolve(ShoppingCart.class);
+    var table = dynamoDbEnhancedClient.table(tableName, TableSchema.fromBean(ShoppingCart.class));
     table.createTable();
-
     return dynamoDbEnhancedClient;
 }
 ```

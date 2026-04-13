@@ -17,7 +17,7 @@ For a detailed, step-by-step explanation, please see the full blog post https://
 ## Prerequisites
 To build and run this project, you will need:
 
-* OpenJDK 21
+* Latest OpenJDK
 * Maven 3.9+
 
 ## Getting Started
@@ -38,32 +38,29 @@ The application will be available at http://localhost:8080.
 The automation is achieved through two key components:
 
 ### DynamoDBLocal Maven Dependency:
-The pom.xml includes the com.amazonaws:DynamoDBLocal dependency, which contains the necessary classes to run an embedded, in-process instance of DynamoDB.
+The pom.xml includes the software.amazon.dynamodb:DynamoDBLocal dependency, which contains the necessary classes to run an embedded, in-process instance of DynamoDB.
 
 ```xml
 <dependency>
-    <groupId>com.amazonaws</groupId>
+    <groupId>software.amazon.dynamodb</groupId>
     <artifactId>DynamoDBLocal</artifactId>
-    <version>2.6.0</version>
-</dependency>   
+    <version>3.3.0</version>
+</dependency>
 ```
 
 ### Embedded Client Configuration:
 A @Produces configuration, which programmatically starts the embedded database and creates the shopping_cart table on application startup.
 
 ```java
-public class DynamoDbLocalConfiguration {
+@Produces
+DynamoDbTable<ShoppingCart> shoppingCartDynamoDbTable() {
+    var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
+            .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())
+            .build();
 
-    @Produces
-    DynamoDbTable<ShoppingCart> shoppingCartDynamoDbTable() {
-        var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
-                .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())
-                .build();
-
-        var table = dynamoDbEnhancedClient.table("shopping_cart", TableSchema.fromClass(ShoppingCart.class));
-        table.createTable();
-        return table;
-    }
+    var table = dynamoDbEnhancedClient.table("shopping_cart", TableSchema.fromClass(ShoppingCart.class));
+    table.createTable();
+    return table;
 }
 ```
 
