@@ -1,10 +1,10 @@
 package dev.notioniq.quickstarts.dynamodb.quarkus;
 
-import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import jakarta.enterprise.inject.Produces;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.dynamodb.services.local.embedded.DynamoDBEmbedded;
 
 public class DynamoDbLocalConfiguration {
 
