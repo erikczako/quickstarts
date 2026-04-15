@@ -1,5 +1,6 @@
 package dev.notioniq.quickstarts.dynamodb.localstack.spring;
 
+import io.awspring.cloud.dynamodb.DynamoDbTableNameResolver;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,12 +11,13 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) {
+	static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(DynamoDbEnhancedClient client) {
-		return (args) -> client.table("shopping_cart", TableSchema.fromBean(ShoppingCart.class)).createTable();
+	CommandLineRunner commandLineRunner(DynamoDbEnhancedClient client, DynamoDbTableNameResolver tableNameResolver) {
+		var tableName = tableNameResolver.resolve(ShoppingCart.class);
+		return (args) -> client.table(tableName, TableSchema.fromBean(ShoppingCart.class)).createTable();
 	}
 }

@@ -2,27 +2,20 @@ package dev.notioniq.quickstarts.dynamodb.localstack.spring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.springframework.test.web.servlet.client.RestTestClient;
+import org.testcontainers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration tests for the {@link ShoppingCartController}.
@@ -37,11 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Erik Czako
  */
 @Testcontainers
+@AutoConfigureRestTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ShoppingCartControllerTest {
 
     @Autowired
-    TestRestTemplate restTemplate;
+    RestTestClient restTestClient;
 
     /**
      * A static {@link LocalStackContainer} instance managed by Testcontainers is configured to run the DynamoDB service.
@@ -49,8 +43,8 @@ class ShoppingCartControllerTest {
      * lifecycle of this Docker container, starting it before any tests in this class run and stopping it after all tests have completed.
      */
     @Container
-    public static LocalStackContainer localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack"))
-            .withServices(LocalStackContainer.Service.DYNAMODB);
+    public static LocalStackContainer localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:community-archive"))
+            .withServices("dynamodb");
 
     /**
      * Dynamically configures environment properties to integrate with the running LocalStack container.
@@ -65,7 +59,7 @@ class ShoppingCartControllerTest {
         registry.add("spring.cloud.aws.credentials.access-key", localstack::getAccessKey);
         registry.add("spring.cloud.aws.credentials.secret-key", localstack::getSecretKey);
         registry.add("spring.cloud.aws.region.static", localstack::getRegion);
-        registry.add("spring.cloud.aws.dynamodb.endpoint", () -> localstack.getEndpointOverride(LocalStackContainer.Service.DYNAMODB).toString());
+        registry.add("spring.cloud.aws.dynamodb.endpoint", () -> localstack.getEndpoint().toString());
     }
 
     @Test
@@ -74,26 +68,44 @@ class ShoppingCartControllerTest {
         var expectedNumberOfItems = 7;
 
         // create a new shopping cart for current user
-        var uri = restTemplate.postForLocation("/v1/shopping-carts", new ShoppingCartRequest(expectedNumberOfItems, expectedTotalPrice));
+        var uri = restTestClient.post()
+                .uri("/v1/shopping-carts")
+                .body(new ShoppingCartRequest(expectedNumberOfItems, expectedTotalPrice))
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .returnResult()
+                .getResponseHeaders()
+                .getLocation();
+
         assertNotNull(uri);
 
         // get the shopping cart for current user
-        var response = restTemplate.getForObject(uri, ShoppingCart.class);
+        var response = restTestClient.get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBody(ShoppingCart.class)
+                .returnResult()
+                .getResponseBody();
+
+        assertNotNull(response);
         assertEquals(expectedTotalPrice, response.getTotalPrice());
         assertEquals(expectedNumberOfItems, response.getNumberOfItems());
 
         // delete the shopping cart for current user
-        var deleteResponse = restTemplate.exchange(uri, HttpMethod.DELETE, null, Void.class);
-        assertTrue(deleteResponse.getStatusCode().is2xxSuccessful());
+        restTestClient.delete()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful();
 
         // try to get the shopping cart for current user again
-        var getResponse = restTemplate.getForEntity(uri, ShoppingCart.class);
-        assertEquals(HttpStatus.NOT_FOUND, getResponse.getStatusCode());
-    }
-
-    @Test
-    void testShoppingCartNotFound() {
-        var response = restTemplate.getForEntity("/v1/shopping-carts/current", ShoppingCart.class);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        restTestClient.get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
     }
 }

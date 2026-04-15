@@ -1,5 +1,6 @@
 package dev.notioniq.quickstarts.dynamodb.localstack.spring;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,14 +13,11 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/shopping-carts")
 public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
-
-    public ShoppingCartController(ShoppingCartService shoppingCartService) {
-        this.shoppingCartService = shoppingCartService;
-    }
 
     @GetMapping("current")
     public ResponseEntity<ShoppingCart> find() {

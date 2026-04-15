@@ -1,4 +1,7 @@
 spring:
+  docker:
+    compose:
+      file: classpath:compose.yml
   cloud:
     aws:
       credentials:
