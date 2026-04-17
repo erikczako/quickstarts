@@ -1,21 +1,17 @@
 package dev.notioniq.quickstarts.dynamodb.spring;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class ShoppingCartService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ShoppingCartService.class);
-
     private final ShoppingCartRepository shoppingCartRepository;
-
-    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository) {
-        this.shoppingCartRepository = shoppingCartRepository;
-    }
 
     public Optional<ShoppingCart> find() {
         return shoppingCartRepository.find(currentUserId());
@@ -23,18 +19,18 @@ public class ShoppingCartService {
 
     public void delete() {
         var userId = currentUserId();
-        logger.info("Deleting shopping cart for user {}", userId);
+        log.info("Deleting shopping cart for user {}", userId);
         shoppingCartRepository.delete(userId);
-        logger.info("Successfully deleted shopping cart for user {}", userId);
+        log.info("Successfully deleted shopping cart for user {}", userId);
     }
 
     public ShoppingCart save(ShoppingCartRequest shoppingCartRequest) {
         var userId = currentUserId();
-        var shoppingCart = new ShoppingCart(userId, shoppingCartRequest.totalPrice(), shoppingCartRequest.numberOfItems());
-        logger.info("Creating new shopping cart for user {}.", userId);
+        var shoppingCart = new ShoppingCart(userId, shoppingCartRequest.numberOfItems(), shoppingCartRequest.totalPrice());
+        log.info("Creating new shopping cart for user {}.", userId);
 
         shoppingCartRepository.save(shoppingCart);
-        logger.info("Successfully created shopping cart for user {}.", userId);
+        log.info("Successfully created shopping cart for user {}.", userId);
         return shoppingCart;
     }
 
