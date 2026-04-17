@@ -1,5 +1,6 @@
 package dev.notioniq.quickstarts.dynamodb.quarkus;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -11,11 +12,8 @@ import jakarta.ws.rs.core.UriBuilder;
 @Path("/v1/shopping-carts")
 public class ShoppingCartResource {
 
-    private final ShoppingCartService shoppingCartService;
-
-    public ShoppingCartResource(ShoppingCartService shoppingCartService) {
-        this.shoppingCartService = shoppingCartService;
-    }
+    @Inject
+    private ShoppingCartService shoppingCartService;
 
     @GET
     @Path("current")
