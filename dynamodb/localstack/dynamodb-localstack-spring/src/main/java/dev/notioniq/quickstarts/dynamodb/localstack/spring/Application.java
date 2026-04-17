@@ -18,6 +18,6 @@ public class Application {
 	@Bean
 	CommandLineRunner commandLineRunner(DynamoDbEnhancedClient client, DynamoDbTableNameResolver tableNameResolver) {
 		var tableName = tableNameResolver.resolve(ShoppingCart.class);
-		return (args) -> client.table(tableName, TableSchema.fromBean(ShoppingCart.class)).createTable();
+		return _ -> client.table(tableName, TableSchema.fromBean(ShoppingCart.class)).createTable();
 	}
 }
