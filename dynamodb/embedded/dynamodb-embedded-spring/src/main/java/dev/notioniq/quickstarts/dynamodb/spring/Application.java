@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -15,11 +16,12 @@ import software.amazon.dynamodb.services.local.embedded.DynamoDBEmbedded;
 @SpringBootApplication
 public class Application {
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
     @Bean
+    @Profile({"local", "test"})
     DynamoDbEnhancedClient dynamoDbEnhancedClient(DynamoDbTableNameResolver tableNameResolver) {
         var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())
@@ -34,7 +36,7 @@ public class Application {
     private void createTable(DynamoDbTable<ShoppingCart> table) {
         try {
             table.createTable();
-        } catch (ResourceInUseException _) {
+        } catch (ResourceInUseException exception) {
             log.info("Table already created");
         }
     }
