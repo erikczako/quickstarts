@@ -2,17 +2,15 @@ package dev.notioniq.quickstarts.dynamodb.quarkus;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.util.Optional;
 
 @ApplicationScoped
 public class ShoppingCartService {
 
-    private final ShoppingCartRepository shoppingCartRepository;
-
-    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository) {
-        this.shoppingCartRepository = shoppingCartRepository;
-    }
+    @Inject
+    private ShoppingCartRepository shoppingCartRepository;
 
     public Optional<ShoppingCart> find() {
         return shoppingCartRepository.find(currentUserId());
