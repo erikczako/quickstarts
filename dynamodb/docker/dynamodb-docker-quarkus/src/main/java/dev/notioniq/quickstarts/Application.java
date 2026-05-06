@@ -12,28 +12,21 @@ import software.amazon.awssdk.services.dynamodb.model.ResourceInUseException;
 
 @QuarkusMain
 @IfBuildProfile("dev")
-public class Application {
+public class Application implements QuarkusApplication {
 
-    public static void main(String... args) {
-        Quarkus.run(DynamoDbLocal.class, args);
-    }
+    @Inject
+    @NamedDynamoDbTable(ShoppingCart.TABLE_NAME)
+    private DynamoDbTable<ShoppingCart> dynamoDbTable;
 
-    public static class DynamoDbLocal implements QuarkusApplication {
-
-        @Inject
-        @NamedDynamoDbTable(ShoppingCart.TABLE_NAME)
-        private DynamoDbTable<ShoppingCart> dynamoDbTable;
-
-        @Override
-        public int run(String... args) {
-            try {
-                dynamoDbTable.createTable();
-            } catch (ResourceInUseException exception) {
-                Log.info("Table already created");
-            }
-
-            Quarkus.waitForExit();
-            return 0;
+    @Override
+    public int run(String... args) {
+        try {
+            dynamoDbTable.createTable();
+        } catch (ResourceInUseException exception) {
+            Log.info("Table already created");
         }
+
+        Quarkus.waitForExit();
+        return 0;
     }
 }
