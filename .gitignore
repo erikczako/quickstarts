@@ -1,8 +1,17 @@
+# IDEs and editors
+.idea/
+
+# Diagrams
+*.drawio.bkp
+
 # Compiled class file
 *.class
 
 # Log file
 *.log
+
+# System Files
+.DS_Store
 
 # BlueJ files
 *.ctxt

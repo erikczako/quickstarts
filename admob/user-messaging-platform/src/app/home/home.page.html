@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>User Messaging Platform - UMP</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">User Messaging Platform - UMP</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <div class="container">
+        <div><strong>Consent Status = </strong>{{ status }}</div>
+        <div><strong>Consent Form Available = </strong>{{ isConsentFormAvailable }}</div>
+        <div><strong>Can Request Ads = </strong>{{ canRequestAds }}</div>
+        <div><strong>Privacy Options Status = </strong>{{ privacyOptionsRequirementStatus }}</div>
+    </div>
+</ion-content>

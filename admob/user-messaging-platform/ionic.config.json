@@ -1,0 +1,7 @@
+{
+    "name": "user-messaging-platform",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "angular-standalone"
+}
