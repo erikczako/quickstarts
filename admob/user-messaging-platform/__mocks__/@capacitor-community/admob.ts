@@ -23,6 +23,10 @@ export const AdMob = {
             canRequestAds: true,
             privacyOptionsRequirementStatus: PrivacyOptionsRequirementStatus.REQUIRED
         });
+    },
+
+    async showPrivacyOptionsForm(): Promise<void> {
+        return Promise.resolve();
     }
 };
 
