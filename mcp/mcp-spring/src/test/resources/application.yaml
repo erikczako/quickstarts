@@ -1,0 +1,14 @@
+spring:
+  docker:
+    compose:
+      enabled: false
+  cloud:
+    aws:
+      credentials:
+        access-key: test
+        secret-key: test
+      dynamodb:
+        region: eu-central-1
+
+shopping-cart:
+  table-name: shopping-cart

@@ -1,0 +1,12 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+  cloud:
+    aws:
+      credentials:
+        access-key: testKey
+        secret-key: testSecret
+      dynamodb:
+        region: eu-central-1
+        endpoint: "http://localhost:8000"

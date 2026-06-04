@@ -1,0 +1,17 @@
+spring:
+  ai:
+    mcp:
+      server:
+        protocol: STREAMABLE
+        name: shopping-cart
+        annotation-scanner:
+          enabled: true
+        streamable-http:
+          mcp-endpoint: /mcp
+
+  docker:
+    compose:
+      enabled: false
+
+shopping-cart:
+  table-name: shopping-cart
