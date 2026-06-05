@@ -1,0 +1,14 @@
+quarkus:
+  devservices:
+    enabled: false
+  dynamodb:
+    aws:
+      region: eu-central-1
+      credentials:
+        type: static
+        static-provider:
+          access-key-id: test
+          secret-access-key: test
+
+shopping-cart:
+  table-name: shopping-cart

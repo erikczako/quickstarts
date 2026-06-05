@@ -1,0 +1,6 @@
+quarkus:
+  devservices:
+    enabled: false
+
+shopping-cart:
+  table-name: shopping-cart

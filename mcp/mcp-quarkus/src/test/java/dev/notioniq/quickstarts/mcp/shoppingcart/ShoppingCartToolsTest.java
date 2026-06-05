@@ -1,15 +1,14 @@
 package dev.notioniq.quickstarts.mcp.shoppingcart;
 
-import dev.notioniq.quickstarts.mcp.DynamoDbContainer;
+import dev.notioniq.quickstarts.mcp.DynamoDbContainerLifecycleManager;
 import dev.notioniq.quickstarts.mcp.product.Product;
-import io.awspring.cloud.dynamodb.DynamoDbTemplate;
+import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.context.ImportTestcontainers;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
 import java.math.BigDecimal;
 
@@ -18,23 +17,28 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Testcontainers
-@SpringBootTest
-@ActiveProfiles("test")
-@ImportTestcontainers(DynamoDbContainer.class)
+@QuarkusTest
+@QuarkusTestResource(DynamoDbContainerLifecycleManager.class)
 class ShoppingCartToolsTest {
 
-	@Autowired
+	@Inject
 	ShoppingCartTools shoppingCartTools;
 
-	@Autowired
-	DynamoDbTemplate dynamoDbTemplate;
+    @Inject
+    DynamoDbTable<Product> productTable;
 
-	@BeforeEach
-	void beforeEach() {
-		dynamoDbTemplate.scanAll(Product.class).items().forEach(dynamoDbTemplate::delete);
-		dynamoDbTemplate.scanAll(ShoppingCartItem.class).items().forEach(dynamoDbTemplate::delete);
-	}
+    @Inject
+    DynamoDbTable<ShoppingCartItem> shoppingCartItemTable;
+
+    @BeforeEach
+    void beforeEach() {
+        productTable.createTable();
+    }
+
+    @AfterEach
+    void afterEach() {
+        productTable.deleteTable();
+    }
 
 	@Test
 	void retrieveShoppingCartItemsReturnsEmptyListTest() {
@@ -99,12 +103,14 @@ class ShoppingCartToolsTest {
 
 	private ShoppingCartItem mockItem() {
 		var item = new ShoppingCartItem(222, 1, new BigDecimal("2499"));
-		return dynamoDbTemplate.save(item);
+		shoppingCartItemTable.putItem(item);
+        return item;
 	}
 
 	private Product mockProduct() {
 		var product = new Product("1", "Test", new BigDecimal("1000"), "Test description");
-		return dynamoDbTemplate.save(product);
+		productTable.putItem(product);
+        return product;
 	}
 
 }
