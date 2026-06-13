@@ -12,7 +12,7 @@ A Spring Boot 4 example built with Spring Web MVC and Spring Cloud AWS DynamoDB 
 - Stores shopping cart data in a `shopping_cart` table in DynamoDB Local
 - Exposes simple REST endpoints for creating, reading, and deleting the current cart
 
-Project README: [dynamodb-docker-spring/README.md](/Users/erikczako/IdeaProjects/blog/quickstarts/dynamodb/docker/dynamodb-docker-spring/README.md)
+Project README: [dynamodb-docker-spring/README.md](https://github.com/erikczako/quickstarts/blob/main/dynamodb/docker/dynamodb-docker-spring/README.md)
 
 ### `dynamodb-docker-quarkus`
 
@@ -22,7 +22,7 @@ A Quarkus 3 example built with Quarkus REST and the DynamoDB Enhanced extension.
 - Stores shopping cart data in the same `shopping_cart` table structure
 - Exposes the same REST API so the framework-specific implementation is easy to compare
 
-Project README: [dynamodb-docker-quarkus/README.md](/Users/erikczako/IdeaProjects/blog/quickstarts/dynamodb/docker/dynamodb-docker-quarkus/README.md)
+Project README: [dynamodb-docker-quarkus/README.md](https://github.com/erikczako/quickstarts/blob/main/dynamodb/docker/dynamodb-docker-quarkus/README.md)
 
 ## Goal
 
