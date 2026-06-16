@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.spring;
+package quickstarts.dynamodb.spring;
 
 import io.awspring.cloud.dynamodb.DynamoDbTemplate;
 import lombok.RequiredArgsConstructor;

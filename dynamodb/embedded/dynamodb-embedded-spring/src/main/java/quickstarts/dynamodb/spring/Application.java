@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.spring;
+package quickstarts.dynamodb.spring;
 
 import io.awspring.cloud.dynamodb.DynamoDbTableNameResolver;
 import lombok.extern.slf4j.Slf4j;

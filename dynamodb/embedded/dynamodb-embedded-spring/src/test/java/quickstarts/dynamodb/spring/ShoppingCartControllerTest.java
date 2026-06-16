@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.spring;
+package quickstarts.dynamodb.spring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

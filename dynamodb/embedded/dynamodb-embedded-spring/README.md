@@ -5,7 +5,7 @@ This approach completely automates the local database setup, requiring no extern
 
 The example application is a simple Shopping Cart service demonstrating basic CRUD (Create, Read, Delete) operations.
 
-For a detailed, step-by-step explanation, please see the full blog post https://notioniq.dev/blog/a-simple-docker-free-dynamodb-local-setup/.
+For a detailed, step-by-step explanation, please see the full blog post https://erikczako.com/blog/a-simple-docker-free-dynamodb-local-setup/.
 
 ## Features
 * Zero Manual Setup: DynamoDB Local starts and stops with the Spring Boot application.
@@ -54,6 +54,7 @@ A Spring @Bean configuration, programmatically starts the embedded database and 
 
 ```java
 @Bean
+@Profile({"local", "test"})
 DynamoDbEnhancedClient dynamoDbEnhancedClient(DynamoDbTableNameResolver tableNameResolver) {
     var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
             .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())

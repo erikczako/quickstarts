@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>dev.notioniq.quickstarts</groupId>
+    <groupId>quickstarts</groupId>
     <artifactId>dynamodb-embedded-spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 

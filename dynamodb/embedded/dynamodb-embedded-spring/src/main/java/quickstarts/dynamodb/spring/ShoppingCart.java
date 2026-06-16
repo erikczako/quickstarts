@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.spring;
+package quickstarts.dynamodb.spring;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
