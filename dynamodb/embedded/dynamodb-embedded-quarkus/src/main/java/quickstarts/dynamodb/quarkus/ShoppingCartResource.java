@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.quarkus;
+package quickstarts.dynamodb.quarkus;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;

@@ -5,7 +5,7 @@ This approach completely automates the local database setup, requiring no extern
 
 The example application is a simple Shopping Cart service demonstrating basic CRUD (Create, Read, Delete) operations.
 
-For a detailed, step-by-step explanation, please see the full blog post https://notioniq.dev/blog/this-is-your-optimal-setup-for-local-dynamodb/.
+For a detailed, step-by-step explanation, please see the full blog post https://erikczako.com/blog/this-is-your-optimal-setup-for-local-dynamodb/.
 
 ## Features
 * Zero Manual Setup: DynamoDB Local starts and stops with the Quarkus application.
@@ -53,6 +53,7 @@ A @Produces configuration, which programmatically starts the embedded database a
 
 ```java
 @Produces
+@IfBuildProfile(anyOf = {"dev", "test"})
 DynamoDbTable<ShoppingCart> shoppingCartDynamoDbTable() {
     var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
             .dynamoDbClient(DynamoDBEmbedded.create(true).dynamoDbClient())

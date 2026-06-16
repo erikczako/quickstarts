@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.quarkus;
+package quickstarts.dynamodb.quarkus;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;

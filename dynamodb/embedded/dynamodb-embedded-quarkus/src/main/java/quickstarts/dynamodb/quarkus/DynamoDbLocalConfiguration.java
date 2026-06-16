@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.quarkus;
+package quickstarts.dynamodb.quarkus;
 
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.logging.Log;
@@ -21,6 +21,13 @@ public class DynamoDbLocalConfiguration {
         var table = dynamoDbEnhancedClient.table("shopping_cart", TableSchema.fromClass(ShoppingCart.class));
         createTable(table);
         return table;
+    }
+
+    @Produces
+    @IfBuildProfile("prod")
+    DynamoDbTable<ShoppingCart> defaultShoppingCartDynamoDbTable() {
+        var dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder().build();
+        return dynamoDbEnhancedClient.table("shopping_cart", TableSchema.fromClass(ShoppingCart.class));
     }
 
     private void createTable(DynamoDbTable<ShoppingCart> table) {

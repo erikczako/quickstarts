@@ -1,4 +1,4 @@
-package dev.notioniq.quickstarts.dynamodb.quarkus;
+package quickstarts.dynamodb.quarkus;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
